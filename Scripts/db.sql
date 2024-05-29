@@ -1,7 +1,4 @@
-CREATE DATABASE DatosBancarios;
-
--- Tabla de Cliente
-CREATE TABLE Cliente (
+CREATE TABLE IF NOT EXISTS Cliente (
     ID_Cliente INT AUTO_INCREMENT PRIMARY KEY,
     Nombre VARCHAR(50),
     Apellido VARCHAR(50),
@@ -11,21 +8,21 @@ CREATE TABLE Cliente (
 );
 
 -- Tabla de Cuenta
-CREATE TABLE Cuenta (
+CREATE TABLE IF NOT EXISTS Cuenta (
     ID_Cuenta INT AUTO_INCREMENT PRIMARY KEY,
     Tipo_Cuenta VARCHAR(50),
     Saldo DECIMAL(15, 2)
 );
 
 -- Tabla de Crédito
-CREATE TABLE Credito (
+CREATE TABLE IF NOT EXISTS Credito (
     ID_Crédito INT AUTO_INCREMENT PRIMARY KEY,
     Límite_Crédito DECIMAL(15, 2),
     Saldo_Crédito DECIMAL(15, 2)
 );
 
 -- Tabla de Historial de Transacciones
-CREATE TABLE Historial_Transacciones (
+CREATE TABLE IF NOT EXISTS Historial_Transacciones (
     ID_Transacción INT AUTO_INCREMENT PRIMARY KEY,
     ID_Cuenta_Crédito INT,
     Tipo_Transacción VARCHAR(50),
@@ -36,7 +33,7 @@ CREATE TABLE Historial_Transacciones (
 );
 
 -- Tabla de Relación Cliente-Cuenta
-CREATE TABLE Relacion_Cliente_Cuenta (
+CREATE TABLE IF NOT EXISTS Relacion_Cliente_Cuenta (
     ID_Relación INT AUTO_INCREMENT PRIMARY KEY,
     ID_Cliente INT,
     ID_Cuenta INT,
@@ -45,7 +42,7 @@ CREATE TABLE Relacion_Cliente_Cuenta (
 );
 
 -- Tabla de Relación Cliente-Crédito
-CREATE TABLE Relacion_Cliente_Crédito (
+CREATE TABLE IF NOT EXISTS Relacion_Cliente_Crédito (
     ID_Relación INT AUTO_INCREMENT PRIMARY KEY,
     ID_Cliente INT,
     ID_Crédito INT,
@@ -63,7 +60,7 @@ INSERT INTO Cliente (Nombre, Apellido, Fecha_Nacimiento, Dirección, Teléfono) 
 ('Laura', 'Sánchez', '1992-09-25', 'Avenida Norte 321', '222-333-4444'),
 ('Miguel', 'Gómez', '1983-04-30', 'Avenida Sur 987', '777-666-5555'),
 ('Sofía', 'Hernández', '1998-01-18', 'Calle Este 654', '111-222-3333'),
-('Elena', 'Díaz', '1979-06-22', 'Calle Oeste 147', '999-111-2222'),
+('Elena', 'Hernandez', '1979-06-22', 'Calle Oeste 147', '999-111-2222'),
 ('Diego', 'Fernández', '1993-11-11', 'Calle Central 369', '888-999-0000');
 
 -- Datos para la tabla Cuenta
