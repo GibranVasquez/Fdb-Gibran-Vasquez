@@ -1,3 +1,5 @@
+-- Active: 1715624850375@@127.0.0.1@3306@banco
+-- Tabla Cliente
 CREATE TABLE IF NOT EXISTS Cliente (
     ID_Cliente INT AUTO_INCREMENT PRIMARY KEY,
     Nombre VARCHAR(50),
@@ -7,27 +9,27 @@ CREATE TABLE IF NOT EXISTS Cliente (
     Teléfono VARCHAR(20)
 );
 
--- Tabla de Cuenta
+-- Tabla Cuenta
 CREATE TABLE IF NOT EXISTS Cuenta (
     ID_Cuenta INT AUTO_INCREMENT PRIMARY KEY,
     Tipo_Cuenta VARCHAR(50),
     Saldo DECIMAL(15, 2)
 );
 
--- Tabla de Crédito
+-- Tabla Crédito
 CREATE TABLE IF NOT EXISTS Credito (
     ID_Crédito INT AUTO_INCREMENT PRIMARY KEY,
     Límite_Crédito DECIMAL(15, 2),
     Saldo_Crédito DECIMAL(15, 2)
 );
 
--- Tabla de Tipo de Transacción
+-- Tabla Tipo de Transacción
 CREATE TABLE IF NOT EXISTS Tipo_Transaccion (
     ID_Tipo_Transaccion INT AUTO_INCREMENT PRIMARY KEY,
     Descripción VARCHAR(50)
 );
 
--- Tabla de Historial de Transacciones
+-- Tabla Historial de Transacciones
 CREATE TABLE IF NOT EXISTS Historial_Transacciones (
     ID_Transacción INT AUTO_INCREMENT PRIMARY KEY,
     ID_Cuenta_Crédito INT,
@@ -39,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Historial_Transacciones (
     FOREIGN KEY (ID_Tipo_Transaccion) REFERENCES Tipo_Transaccion(ID_Tipo_Transaccion) ON DELETE CASCADE
 );
 
--- Tabla de Relación Cliente-Cuenta
+-- Tabla Relación Cliente-Cuenta
 CREATE TABLE IF NOT EXISTS Relacion_Cliente_Cuenta (
     ID_Relación INT AUTO_INCREMENT PRIMARY KEY,
     ID_Cliente INT,
@@ -48,7 +50,7 @@ CREATE TABLE IF NOT EXISTS Relacion_Cliente_Cuenta (
     FOREIGN KEY (ID_Cuenta) REFERENCES Cuenta(ID_Cuenta) ON DELETE CASCADE
 );
 
--- Tabla de Relación Cliente-Crédito
+-- Tabla Relación Cliente-Crédito
 CREATE TABLE IF NOT EXISTS Relacion_Cliente_Crédito (
     ID_Relación INT AUTO_INCREMENT PRIMARY KEY,
     ID_Cliente INT,
@@ -166,14 +168,16 @@ SELECT MAX(Saldo), MIN(Saldo) FROM Cuenta;
 -- 1.8. Unir dos tablas usando INNER JOIN:
 SELECT Cliente.Nombre, Cuenta.Saldo
 FROM Cliente
-INNER JOIN Cuenta ON Cliente.ID_Cliente = Cuenta.ID_Cuenta;
+INNER JOIN Relacion_Cliente_Cuenta ON Cliente.ID_Cliente = Relacion_Cliente_Cuenta.ID_Cliente
+INNER JOIN Cuenta ON Relacion_Cliente_Cuenta.ID_Cuenta = Cuenta.ID_Cuenta;
 
 -- Consultas intermedias
 
 -- 2.1. Consulta con JOIN y condiciones adicionales:
 SELECT Cliente.Nombre AS Cliente, Cuenta.Tipo_Cuenta AS Tipo_Cuenta
 FROM Cliente
-JOIN Cuenta ON Cliente.ID_Cliente = Cuenta.ID_Cuenta
+JOIN Relacion_Cliente_Cuenta ON Cliente.ID_Cliente = Relacion_Cliente_Cuenta.ID_Cliente
+JOIN Cuenta ON Relacion_Cliente_Cuenta.ID_Cuenta = Cuenta.ID_Cuenta
 WHERE Cuenta.Saldo > 2000.00;
 
 -- 2.2. Consulta con subconsultas correlacionadas:
@@ -185,8 +189,7 @@ WHERE Cliente.Fecha_Nacimiento > (
 
 -- 2.3. Consulta con funciones de agregación y GROUP BY:
 SELECT Cuenta.Tipo_Cuenta, AVG(Cuenta.Saldo) AS Saldo_Promedio
-FROM Cliente
-JOIN Cuenta ON Cliente.ID_Cliente = Cuenta.ID_Cuenta
+FROM Cuenta
 GROUP BY Cuenta.Tipo_Cuenta;
 
 -- 2.4. Consulta con funciones de fecha:
