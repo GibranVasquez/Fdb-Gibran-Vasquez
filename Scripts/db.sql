@@ -1,4 +1,3 @@
--- Active: 1715624850375@@127.0.0.1@3306@banco
 CREATE TABLE IF NOT EXISTS Cliente (
     ID_Cliente INT AUTO_INCREMENT PRIMARY KEY,
     Nombre VARCHAR(50),
@@ -22,15 +21,22 @@ CREATE TABLE IF NOT EXISTS Credito (
     Saldo_Crédito DECIMAL(15, 2)
 );
 
+-- Tabla de Tipo de Transacción
+CREATE TABLE IF NOT EXISTS Tipo_Transaccion (
+    ID_Tipo_Transaccion INT AUTO_INCREMENT PRIMARY KEY,
+    Descripción VARCHAR(50)
+);
+
 -- Tabla de Historial de Transacciones
 CREATE TABLE IF NOT EXISTS Historial_Transacciones (
     ID_Transacción INT AUTO_INCREMENT PRIMARY KEY,
     ID_Cuenta_Crédito INT,
-    Tipo_Transacción VARCHAR(50),
+    ID_Tipo_Transaccion INT,
     Monto DECIMAL(15, 2),
     Fecha DATE,
     Hora TIME,
-    FOREIGN KEY (ID_Cuenta_Crédito) REFERENCES Cuenta(ID_Cuenta) ON DELETE CASCADE
+    FOREIGN KEY (ID_Cuenta_Crédito) REFERENCES Cuenta(ID_Cuenta) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Tipo_Transaccion) REFERENCES Tipo_Transaccion(ID_Tipo_Transaccion) ON DELETE CASCADE
 );
 
 -- Tabla de Relación Cliente-Cuenta
@@ -90,18 +96,23 @@ INSERT INTO Credito (Límite_Crédito, Saldo_Crédito) VALUES
 (4800.00, 2300.00),
 (5200.00, 2500.00);
 
+-- Datos para la tabla Tipo_Transaccion
+INSERT INTO Tipo_Transaccion (Descripción) VALUES
+('Débito'),
+('Crédito');
+
 -- Datos para la tabla Historial_Transacciones
-INSERT INTO Historial_Transacciones (ID_Cuenta_Crédito, Tipo_Transacción, Monto, Fecha, Hora) VALUES
-(1, 'Débito', 100.00, '2024-04-01', '12:30:00'),
-(2, 'Crédito', 200.00, '2024-04-02', '10:45:00'),
-(3, 'Débito', 50.00, '2024-04-03', '14:20:00'),
-(4, 'Crédito', 300.00, '2024-04-04', '09:15:00'),
-(5, 'Débito', 120.00, '2024-04-05', '16:55:00'),
-(6, 'Crédito', 180.00, '2024-04-06', '11:10:00'),
-(7, 'Débito', 70.00, '2024-04-07', '13:40:00'),
-(8, 'Crédito', 250.00, '2024-04-08', '08:20:00'),
-(9, 'Débito', 150.00, '2024-04-09', '17:30:00'),
-(10, 'Crédito', 200.00, '2024-04-10', '10:00:00');
+INSERT INTO Historial_Transacciones (ID_Cuenta_Crédito, ID_Tipo_Transaccion, Monto, Fecha, Hora) VALUES
+(1, 1, 100.00, '2024-04-01', '12:30:00'),
+(2, 2, 200.00, '2024-04-02', '10:45:00'),
+(3, 1, 50.00, '2024-04-03', '14:20:00'),
+(4, 2, 300.00, '2024-04-04', '09:15:00'),
+(5, 1, 120.00, '2024-04-05', '16:55:00'),
+(6, 2, 180.00, '2024-04-06', '11:10:00'),
+(7, 1, 70.00, '2024-04-07', '13:40:00'),
+(8, 2, 250.00, '2024-04-08', '08:20:00'),
+(9, 1, 150.00, '2024-04-09', '17:30:00'),
+(10, 2, 200.00, '2024-04-10', '10:00:00');
 
 -- Datos para la tabla Relacion_Cliente_Cuenta
 INSERT INTO Relacion_Cliente_Cuenta (ID_Cliente, ID_Cuenta) VALUES
